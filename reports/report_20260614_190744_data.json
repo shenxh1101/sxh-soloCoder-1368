@@ -1,0 +1,2578 @@
+{
+  "report_id": "report_20260614_190744",
+  "generated_at": "2026-06-14T19:07:44.471253",
+  "risk_score": 30,
+  "risk_level": "MEDIUM",
+  "file_info": {
+    "path": "D:\\code\\TraeProjects\\1368\\test_samples\\crash_test.sh",
+    "name": "crash_test.sh",
+    "size": 328,
+    "created": "2026-06-14T19:01:01.724183",
+    "modified": "2026-06-14T19:01:01.875754",
+    "md5": "15e35e2605d2a415343d4cec798e3b18",
+    "sha1": "aeef05ace37530ccc4e40ee0beedfbc0e98b1cc7",
+    "sha256": "7cbbc0ea07366174b5624835f6281e3e7112f6063571f11b3369baaebeacd6c6"
+  },
+  "yara": {
+    "file_path": "test_samples\\crash_test.sh",
+    "scanned": false,
+    "rules_loaded": 0,
+    "scan_time": 0.0,
+    "matches": [],
+    "errors": [
+      "yara-python not installed"
+    ],
+    "is_malicious": false,
+    "matched_rules": [],
+    "families": []
+  },
+  "virustotal": {},
+  "sandbox": {
+    "container_id": "fallback_270e994c420b",
+    "start_time": "2026-06-14T19:07:43.309764",
+    "end_time": "2026-06-14T19:07:44.465133",
+    "exit_code": 0,
+    "temp_dir": "D:\\code\\TraeProjects\\1368\\temp\\session_270e994c420b",
+    "stdout_preview": "",
+    "stderr_preview": ""
+  },
+  "behavior": {
+    "summary": {
+      "total_file_events": 25,
+      "total_network_events": 9,
+      "total_process_events": 11,
+      "total_registry_events": 0,
+      "total_api_events": 62,
+      "suspicious_count": 15,
+      "unique_ips": [
+        "88.20.88.34",
+        "192.168.80.46",
+        "93.184.216.34",
+        "8.8.8.8",
+        "142.250.80.46"
+      ],
+      "unique_processes": [
+        "whoami",
+        "crash_test.sh",
+        "ls",
+        "sleep",
+        "bash",
+        "child_of_12345",
+        "cat"
+      ],
+      "unique_files": [
+        "/tmp/sample_output_1234/",
+        "/tmp/sample_output_1234/subdir/payload_1.bin",
+        "/tmp/sample_output_1234/subdir/payload_3.bin",
+        "/tmp/sample_output_1234/c2_config.txt",
+        "/tmp/sample_output_1234/subdir",
+        "/tmp/grandchild_12350.txt",
+        "/tmp/sample_output_1234/credentials.txt",
+        "/tmp/sample_output_1234/subdir/payload_2.bin",
+        "/tmp/sample_output_1234/config_v2.dat",
+        "/tmp/sample_output_1234/config.dat",
+        "/tmp/sample_output_1234/subdir/",
+        "/tmp/tmpfile_1234.tmp",
+        "/tmp/sample_output_1234/passwd_copy.txt"
+      ]
+    },
+    "file_events": [
+      {
+        "timestamp": "2026-06-14T19:07:44.467512",
+        "path": "/tmp/sample_output_1234/",
+        "action": "MODIFY",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467567",
+        "path": "/tmp/sample_output_1234/credentials.txt",
+        "action": "MODIFY",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467613",
+        "path": "/tmp/sample_output_1234/subdir",
+        "action": "CREATE",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467628",
+        "path": "/tmp/sample_output_1234/subdir/payload_1.bin",
+        "action": "MODIFY",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467661",
+        "path": "/tmp/sample_output_1234/subdir/payload_2.bin",
+        "action": "MODIFY",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467692",
+        "path": "/tmp/sample_output_1234/subdir/payload_3.bin",
+        "action": "MODIFY",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468127",
+        "path": "/tmp/tmpfile_1234.tmp",
+        "action": "MODIFY",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468158",
+        "path": "/tmp/tmpfile_1234.tmp",
+        "action": "DELETE",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468172",
+        "path": "/tmp/sample_output_1234/config.dat",
+        "action": "MODIFY",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468210",
+        "path": "/tmp/sample_output_1234/config.dat",
+        "action": "RENAME",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468223",
+        "path": "/tmp/sample_output_1234/credentials.txt",
+        "action": "MODIFY",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468253",
+        "path": "/tmp/sample_output_1234/c2_config.txt",
+        "action": "MODIFY",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468758",
+        "path": "/tmp/sample_output_1234/",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468770",
+        "path": "/tmp/sample_output_1234/config.dat",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468775",
+        "path": "/tmp/sample_output_1234/credentials.txt",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468778",
+        "path": "/tmp/sample_output_1234/subdir/",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468781",
+        "path": "/tmp/sample_output_1234/subdir/payload_1.bin",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468784",
+        "path": "/tmp/sample_output_1234/subdir/payload_2.bin",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468786",
+        "path": "/tmp/sample_output_1234/subdir/payload_3.bin",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468788",
+        "path": "/tmp/sample_output_1234/config_v2.dat",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468791",
+        "path": "/tmp/sample_output_1234/c2_config.txt",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468793",
+        "path": "/tmp/grandchild_12350.txt",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468796",
+        "path": "/tmp/sample_output_1234/passwd_copy.txt",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469010",
+        "path": "/tmp/tmpfile_1234.tmp",
+        "action": "DELETE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469015",
+        "path": "/tmp/sample_output_1234/config.dat",
+        "action": "DELETE",
+        "process": null,
+        "suspicious": false
+      }
+    ],
+    "network_events": [
+      {
+        "timestamp": "2026-06-14T19:07:44.467907",
+        "source_ip": "0.0.0.0",
+        "source_port": 0,
+        "dest_ip": "142.250.80.46",
+        "dest_port": 80,
+        "protocol": "TCP",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468060",
+        "source_ip": "0.0.0.0",
+        "source_port": 0,
+        "dest_ip": "93.184.216.34",
+        "dest_port": 443,
+        "protocol": "TCP",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468094",
+        "source_ip": "0.0.0.0",
+        "source_port": 0,
+        "dest_ip": "8.8.8.8",
+        "dest_port": 53,
+        "protocol": "TCP",
+        "process": "12345",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469621",
+        "source_ip": "1",
+        "source_port": 0,
+        "dest_ip": "192.168.80.46",
+        "dest_port": 52848,
+        "protocol": "TCP",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469632",
+        "source_ip": "1",
+        "source_port": 0,
+        "dest_ip": "192.168.80.46",
+        "dest_port": 53032,
+        "protocol": "TCP",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469637",
+        "source_ip": "0",
+        "source_port": 0,
+        "dest_ip": "192.168.80.46",
+        "dest_port": 53,
+        "protocol": "UDP",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469786",
+        "source_ip": "192.168.80.46",
+        "source_port": 52848,
+        "dest_ip": "88.20.88.34",
+        "dest_port": 443,
+        "protocol": "UDP",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469793",
+        "source_ip": "192.168.80.46",
+        "source_port": 53032,
+        "dest_ip": "93.184.216.34",
+        "dest_port": 443,
+        "protocol": "UDP",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469798",
+        "source_ip": "192.168.80.46",
+        "source_port": 53,
+        "dest_ip": "8.8.8.8",
+        "dest_port": 53,
+        "protocol": "UDP",
+        "process": null,
+        "suspicious": false
+      }
+    ],
+    "process_events": [
+      {
+        "timestamp": "2026-06-14T19:07:44.467434",
+        "pid": 12345,
+        "ppid": 12345,
+        "name": "crash_test.sh",
+        "cmdline": "/sandbox/sample/crash_test.sh",
+        "user": "root",
+        "action": "CREATE",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467723",
+        "pid": 12346,
+        "ppid": 12345,
+        "name": "child_of_12345",
+        "cmdline": "",
+        "user": "root",
+        "action": "FORK",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467735",
+        "pid": 12346,
+        "ppid": 12346,
+        "name": "sleep",
+        "cmdline": "/usr/bin/sleep",
+        "user": "root",
+        "action": "CREATE",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467753",
+        "pid": 12347,
+        "ppid": 12345,
+        "name": "child_of_12345",
+        "cmdline": "",
+        "user": "root",
+        "action": "FORK",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467763",
+        "pid": 12347,
+        "ppid": 12347,
+        "name": "ls",
+        "cmdline": "/usr/bin/ls",
+        "user": "root",
+        "action": "CREATE",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467795",
+        "pid": 12348,
+        "ppid": 12345,
+        "name": "child_of_12345",
+        "cmdline": "",
+        "user": "root",
+        "action": "FORK",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467805",
+        "pid": 12348,
+        "ppid": 12348,
+        "name": "whoami",
+        "cmdline": "/usr/bin/whoami",
+        "user": "root",
+        "action": "CREATE",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467832",
+        "pid": 12349,
+        "ppid": 12345,
+        "name": "child_of_12345",
+        "cmdline": "",
+        "user": "root",
+        "action": "FORK",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467842",
+        "pid": 12349,
+        "ppid": 12349,
+        "name": "cat",
+        "cmdline": "/usr/bin/cat",
+        "user": "root",
+        "action": "CREATE",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467869",
+        "pid": 12350,
+        "ppid": 12345,
+        "name": "child_of_12345",
+        "cmdline": "",
+        "user": "root",
+        "action": "FORK",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467880",
+        "pid": 12350,
+        "ppid": 12350,
+        "name": "bash",
+        "cmdline": "/usr/bin//bin/bash",
+        "user": "root",
+        "action": "CREATE",
+        "suspicious": true
+      }
+    ],
+    "registry_events": [],
+    "api_events": [
+      {
+        "timestamp": "2026-06-14T19:07:44.467434",
+        "pid": 12345,
+        "api_name": "execve",
+        "args": "\"/sandbox/sample/crash_test.sh\", [\"crash_test.sh\"], 0xffff /* 40 vars */",
+        "result": "0",
+        "category": "process",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467512",
+        "pid": 12345,
+        "api_name": "openat",
+        "args": "AT_FDCWD, \"/tmp/sample_output_1234/\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+        "result": "3",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467543",
+        "pid": 12345,
+        "api_name": "write",
+        "args": "3, \"malware config data\\n\", 20",
+        "result": "20",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467555",
+        "pid": 12345,
+        "api_name": "close",
+        "args": "3",
+        "result": "0",
+        "category": "other",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467567",
+        "pid": 12345,
+        "api_name": "openat",
+        "args": "AT_FDCWD, \"/tmp/sample_output_1234/credentials.txt\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+        "result": "3",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467585",
+        "pid": 12345,
+        "api_name": "write",
+        "args": "3, \"stolen password 12345\\n\", 23",
+        "result": "23",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467595",
+        "pid": 12345,
+        "api_name": "write",
+        "args": "3, \"additional stolen data\\n\", 24",
+        "result": "24",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467604",
+        "pid": 12345,
+        "api_name": "close",
+        "args": "3",
+        "result": "0",
+        "category": "other",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467613",
+        "pid": 12345,
+        "api_name": "mkdir",
+        "args": "\"/tmp/sample_output_1234/subdir\", 0755",
+        "result": "0",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467628",
+        "pid": 12345,
+        "api_name": "openat",
+        "args": "AT_FDCWD, \"/tmp/sample_output_1234/subdir/payload_1.bin\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+        "result": "3",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467641",
+        "pid": 12345,
+        "api_name": "write",
+        "args": "3, \"payload part 1\\n\", 15",
+        "result": "15",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467650",
+        "pid": 12345,
+        "api_name": "close",
+        "args": "3",
+        "result": "0",
+        "category": "other",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467661",
+        "pid": 12345,
+        "api_name": "openat",
+        "args": "AT_FDCWD, \"/tmp/sample_output_1234/subdir/payload_2.bin\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+        "result": "3",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467674",
+        "pid": 12345,
+        "api_name": "write",
+        "args": "3, \"payload part 2\\n\", 15",
+        "result": "15",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467683",
+        "pid": 12345,
+        "api_name": "close",
+        "args": "3",
+        "result": "0",
+        "category": "other",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467692",
+        "pid": 12345,
+        "api_name": "openat",
+        "args": "AT_FDCWD, \"/tmp/sample_output_1234/subdir/payload_3.bin\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+        "result": "3",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467704",
+        "pid": 12345,
+        "api_name": "write",
+        "args": "3, \"payload part 3\\n\", 15",
+        "result": "15",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467713",
+        "pid": 12345,
+        "api_name": "close",
+        "args": "3",
+        "result": "0",
+        "category": "other",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467723",
+        "pid": 12345,
+        "api_name": "clone",
+        "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+        "result": "12346",
+        "category": "process",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467735",
+        "pid": 12346,
+        "api_name": "execve",
+        "args": "\"/usr/bin/sleep\", [\"sleep\", \"30\"], 0xffff /* 40 vars */",
+        "result": "0",
+        "category": "process",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467753",
+        "pid": 12345,
+        "api_name": "clone",
+        "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+        "result": "12347",
+        "category": "process",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467763",
+        "pid": 12347,
+        "api_name": "execve",
+        "args": "\"/usr/bin/ls\", [\"ls\", \"-la /tmp\"], 0xffff /* 40 vars */",
+        "result": "0",
+        "category": "process",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467785",
+        "pid": 12347,
+        "api_name": "PROCESS_END",
+        "args": "exited with 0",
+        "result": "",
+        "category": "process",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467795",
+        "pid": 12345,
+        "api_name": "clone",
+        "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+        "result": "12348",
+        "category": "process",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467805",
+        "pid": 12348,
+        "api_name": "execve",
+        "args": "\"/usr/bin/whoami\", [\"whoami\", \"\"], 0xffff /* 40 vars */",
+        "result": "0",
+        "category": "process",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467822",
+        "pid": 12348,
+        "api_name": "PROCESS_END",
+        "args": "exited with 0",
+        "result": "",
+        "category": "process",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467832",
+        "pid": 12345,
+        "api_name": "clone",
+        "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+        "result": "12349",
+        "category": "process",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467842",
+        "pid": 12349,
+        "api_name": "execve",
+        "args": "\"/usr/bin/cat\", [\"cat\", \"/etc/passwd\"], 0xffff /* 40 vars */",
+        "result": "0",
+        "category": "process",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467859",
+        "pid": 12349,
+        "api_name": "PROCESS_END",
+        "args": "exited with 0",
+        "result": "",
+        "category": "process",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467869",
+        "pid": 12345,
+        "api_name": "clone",
+        "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+        "result": "12350",
+        "category": "process",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467880",
+        "pid": 12350,
+        "api_name": "execve",
+        "args": "\"/usr/bin//bin/bash\", [\"/bin/bash\", \"-c sleep 5\"], 0xffff /* 40 vars */",
+        "result": "0",
+        "category": "process",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467894",
+        "pid": 12345,
+        "api_name": "socket",
+        "args": "AF_INET, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_TCP",
+        "result": "4",
+        "category": "network",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467907",
+        "pid": 12345,
+        "api_name": "connect",
+        "args": "4, {sa_family=AF_INET, sin_port=htons(80), sin_addr=inet_addr(\"142.250.80.46\")}, 16",
+        "result": "-1 EINPROGRESS",
+        "category": "network",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468038",
+        "pid": 12345,
+        "api_name": "close",
+        "args": "4",
+        "result": "0",
+        "category": "other",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468048",
+        "pid": 12345,
+        "api_name": "socket",
+        "args": "AF_INET, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_TCP",
+        "result": "4",
+        "category": "network",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468060",
+        "pid": 12345,
+        "api_name": "connect",
+        "args": "4, {sa_family=AF_INET, sin_port=htons(443), sin_addr=inet_addr(\"93.184.216.34\")}, 16",
+        "result": "-1 EINPROGRESS",
+        "category": "network",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468075",
+        "pid": 12345,
+        "api_name": "close",
+        "args": "4",
+        "result": "0",
+        "category": "other",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468084",
+        "pid": 12345,
+        "api_name": "socket",
+        "args": "AF_INET, SOCK_DGRAM|SOCK_CLOEXEC, IPPROTO_UDP",
+        "result": "4",
+        "category": "network",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468094",
+        "pid": 12345,
+        "api_name": "connect",
+        "args": "4, {sa_family=AF_INET, sin_port=htons(53), sin_addr=inet_addr(\"8.8.8.8\")}, 16",
+        "result": "0",
+        "category": "network",
+        "suspicious": true
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468107",
+        "pid": 12345,
+        "api_name": "sendto",
+        "args": "4, \"\\x12\\x34\\x01\\x00\\x00\\x01...\\x00\\x00\\x01\", 28, MSG_NOSIGNAL, NULL, 0",
+        "result": "28",
+        "category": "network",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468118",
+        "pid": 12345,
+        "api_name": "close",
+        "args": "4",
+        "result": "0",
+        "category": "other",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468127",
+        "pid": 12345,
+        "api_name": "openat",
+        "args": "AT_FDCWD, \"/tmp/tmpfile_1234.tmp\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+        "result": "3",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468141",
+        "pid": 12345,
+        "api_name": "write",
+        "args": "3, \"temp data\\n\", 10",
+        "result": "10",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468150",
+        "pid": 12345,
+        "api_name": "close",
+        "args": "3",
+        "result": "0",
+        "category": "other",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468158",
+        "pid": 12345,
+        "api_name": "unlink",
+        "args": "\"/tmp/tmpfile_1234.tmp\"",
+        "result": "0",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468172",
+        "pid": 12345,
+        "api_name": "openat",
+        "args": "AT_FDCWD, \"/tmp/sample_output_1234/config.dat\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+        "result": "3",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468184",
+        "pid": 12345,
+        "api_name": "write",
+        "args": "3, \"malware config data\\n\", 20",
+        "result": "20",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468193",
+        "pid": 12345,
+        "api_name": "write",
+        "args": "3, \"updated config\\n\", 15",
+        "result": "15",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468201",
+        "pid": 12345,
+        "api_name": "close",
+        "args": "3",
+        "result": "0",
+        "category": "other",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468210",
+        "pid": 12345,
+        "api_name": "rename",
+        "args": "\"/tmp/sample_output_1234/config.dat\", \"/tmp/sample_output_1234/config_v2.dat\"",
+        "result": "0",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468223",
+        "pid": 12345,
+        "api_name": "openat",
+        "args": "AT_FDCWD, \"/tmp/sample_output_1234/credentials.txt\", O_RDWR|O_APPEND",
+        "result": "3",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468236",
+        "pid": 12345,
+        "api_name": "write",
+        "args": "3, \"exfiltrated at 2026\\n\", 22",
+        "result": "22",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468244",
+        "pid": 12345,
+        "api_name": "close",
+        "args": "3",
+        "result": "0",
+        "category": "other",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468253",
+        "pid": 12345,
+        "api_name": "openat",
+        "args": "AT_FDCWD, \"/tmp/sample_output_1234/c2_config.txt\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+        "result": "3",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468266",
+        "pid": 12345,
+        "api_name": "write",
+        "args": "3, \"C2 server: c2.malware-domain.com:443\\n\", 42",
+        "result": "42",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468274",
+        "pid": 12345,
+        "api_name": "write",
+        "args": "3, \"exfil target: 192.168.1.100:8080\\n\", 38",
+        "result": "38",
+        "category": "file",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468282",
+        "pid": 12345,
+        "api_name": "close",
+        "args": "3",
+        "result": "0",
+        "category": "other",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468292",
+        "pid": 12346,
+        "api_name": "SIGNAL_SIGTERM",
+        "args": "12346  19:07:44.902472 --- SIGTERM {",
+        "result": "",
+        "category": "signal",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468301",
+        "pid": 12346,
+        "api_name": "PROCESS_END",
+        "args": "killed by SIGTERM",
+        "result": "",
+        "category": "process",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468310",
+        "pid": 12350,
+        "api_name": "SIGNAL_SIGTERM",
+        "args": "12350  19:07:44.902472 --- SIGTERM {",
+        "result": "",
+        "category": "signal",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468319",
+        "pid": 12350,
+        "api_name": "PROCESS_END",
+        "args": "killed by SIGTERM",
+        "result": "",
+        "category": "process",
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468329",
+        "pid": 12345,
+        "api_name": "PROCESS_END",
+        "args": "exited with 0",
+        "result": "",
+        "category": "process",
+        "suspicious": false
+      }
+    ],
+    "process_tree": {},
+    "timeline": [
+      {
+        "timestamp": "2026-06-14T19:07:44.467434",
+        "type": "process",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467434",
+          "pid": 12345,
+          "ppid": 12345,
+          "name": "crash_test.sh",
+          "cmdline": "/sandbox/sample/crash_test.sh",
+          "user": "root",
+          "action": "CREATE",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467434",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467434",
+          "pid": 12345,
+          "api_name": "execve",
+          "args": "\"/sandbox/sample/crash_test.sh\", [\"crash_test.sh\"], 0xffff /* 40 vars */",
+          "result": "0",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467512",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467512",
+          "path": "/tmp/sample_output_1234/",
+          "action": "MODIFY",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467512",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467512",
+          "pid": 12345,
+          "api_name": "openat",
+          "args": "AT_FDCWD, \"/tmp/sample_output_1234/\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+          "result": "3",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467543",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467543",
+          "pid": 12345,
+          "api_name": "write",
+          "args": "3, \"malware config data\\n\", 20",
+          "result": "20",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467555",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467555",
+          "pid": 12345,
+          "api_name": "close",
+          "args": "3",
+          "result": "0",
+          "category": "other",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467567",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467567",
+          "path": "/tmp/sample_output_1234/credentials.txt",
+          "action": "MODIFY",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467567",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467567",
+          "pid": 12345,
+          "api_name": "openat",
+          "args": "AT_FDCWD, \"/tmp/sample_output_1234/credentials.txt\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+          "result": "3",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467585",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467585",
+          "pid": 12345,
+          "api_name": "write",
+          "args": "3, \"stolen password 12345\\n\", 23",
+          "result": "23",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467595",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467595",
+          "pid": 12345,
+          "api_name": "write",
+          "args": "3, \"additional stolen data\\n\", 24",
+          "result": "24",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467604",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467604",
+          "pid": 12345,
+          "api_name": "close",
+          "args": "3",
+          "result": "0",
+          "category": "other",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467613",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467613",
+          "path": "/tmp/sample_output_1234/subdir",
+          "action": "CREATE",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467613",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467613",
+          "pid": 12345,
+          "api_name": "mkdir",
+          "args": "\"/tmp/sample_output_1234/subdir\", 0755",
+          "result": "0",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467628",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467628",
+          "path": "/tmp/sample_output_1234/subdir/payload_1.bin",
+          "action": "MODIFY",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467628",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467628",
+          "pid": 12345,
+          "api_name": "openat",
+          "args": "AT_FDCWD, \"/tmp/sample_output_1234/subdir/payload_1.bin\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+          "result": "3",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467641",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467641",
+          "pid": 12345,
+          "api_name": "write",
+          "args": "3, \"payload part 1\\n\", 15",
+          "result": "15",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467650",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467650",
+          "pid": 12345,
+          "api_name": "close",
+          "args": "3",
+          "result": "0",
+          "category": "other",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467661",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467661",
+          "path": "/tmp/sample_output_1234/subdir/payload_2.bin",
+          "action": "MODIFY",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467661",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467661",
+          "pid": 12345,
+          "api_name": "openat",
+          "args": "AT_FDCWD, \"/tmp/sample_output_1234/subdir/payload_2.bin\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+          "result": "3",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467674",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467674",
+          "pid": 12345,
+          "api_name": "write",
+          "args": "3, \"payload part 2\\n\", 15",
+          "result": "15",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467683",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467683",
+          "pid": 12345,
+          "api_name": "close",
+          "args": "3",
+          "result": "0",
+          "category": "other",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467692",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467692",
+          "path": "/tmp/sample_output_1234/subdir/payload_3.bin",
+          "action": "MODIFY",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467692",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467692",
+          "pid": 12345,
+          "api_name": "openat",
+          "args": "AT_FDCWD, \"/tmp/sample_output_1234/subdir/payload_3.bin\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+          "result": "3",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467704",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467704",
+          "pid": 12345,
+          "api_name": "write",
+          "args": "3, \"payload part 3\\n\", 15",
+          "result": "15",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467713",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467713",
+          "pid": 12345,
+          "api_name": "close",
+          "args": "3",
+          "result": "0",
+          "category": "other",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467723",
+        "type": "process",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467723",
+          "pid": 12346,
+          "ppid": 12345,
+          "name": "child_of_12345",
+          "cmdline": "",
+          "user": "root",
+          "action": "FORK",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467723",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467723",
+          "pid": 12345,
+          "api_name": "clone",
+          "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+          "result": "12346",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467735",
+        "type": "process",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467735",
+          "pid": 12346,
+          "ppid": 12346,
+          "name": "sleep",
+          "cmdline": "/usr/bin/sleep",
+          "user": "root",
+          "action": "CREATE",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467735",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467735",
+          "pid": 12346,
+          "api_name": "execve",
+          "args": "\"/usr/bin/sleep\", [\"sleep\", \"30\"], 0xffff /* 40 vars */",
+          "result": "0",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467753",
+        "type": "process",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467753",
+          "pid": 12347,
+          "ppid": 12345,
+          "name": "child_of_12345",
+          "cmdline": "",
+          "user": "root",
+          "action": "FORK",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467753",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467753",
+          "pid": 12345,
+          "api_name": "clone",
+          "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+          "result": "12347",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467763",
+        "type": "process",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467763",
+          "pid": 12347,
+          "ppid": 12347,
+          "name": "ls",
+          "cmdline": "/usr/bin/ls",
+          "user": "root",
+          "action": "CREATE",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467763",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467763",
+          "pid": 12347,
+          "api_name": "execve",
+          "args": "\"/usr/bin/ls\", [\"ls\", \"-la /tmp\"], 0xffff /* 40 vars */",
+          "result": "0",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467785",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467785",
+          "pid": 12347,
+          "api_name": "PROCESS_END",
+          "args": "exited with 0",
+          "result": "",
+          "category": "process",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467795",
+        "type": "process",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467795",
+          "pid": 12348,
+          "ppid": 12345,
+          "name": "child_of_12345",
+          "cmdline": "",
+          "user": "root",
+          "action": "FORK",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467795",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467795",
+          "pid": 12345,
+          "api_name": "clone",
+          "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+          "result": "12348",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467805",
+        "type": "process",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467805",
+          "pid": 12348,
+          "ppid": 12348,
+          "name": "whoami",
+          "cmdline": "/usr/bin/whoami",
+          "user": "root",
+          "action": "CREATE",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467805",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467805",
+          "pid": 12348,
+          "api_name": "execve",
+          "args": "\"/usr/bin/whoami\", [\"whoami\", \"\"], 0xffff /* 40 vars */",
+          "result": "0",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467822",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467822",
+          "pid": 12348,
+          "api_name": "PROCESS_END",
+          "args": "exited with 0",
+          "result": "",
+          "category": "process",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467832",
+        "type": "process",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467832",
+          "pid": 12349,
+          "ppid": 12345,
+          "name": "child_of_12345",
+          "cmdline": "",
+          "user": "root",
+          "action": "FORK",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467832",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467832",
+          "pid": 12345,
+          "api_name": "clone",
+          "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+          "result": "12349",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467842",
+        "type": "process",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467842",
+          "pid": 12349,
+          "ppid": 12349,
+          "name": "cat",
+          "cmdline": "/usr/bin/cat",
+          "user": "root",
+          "action": "CREATE",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467842",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467842",
+          "pid": 12349,
+          "api_name": "execve",
+          "args": "\"/usr/bin/cat\", [\"cat\", \"/etc/passwd\"], 0xffff /* 40 vars */",
+          "result": "0",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467859",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467859",
+          "pid": 12349,
+          "api_name": "PROCESS_END",
+          "args": "exited with 0",
+          "result": "",
+          "category": "process",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467869",
+        "type": "process",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467869",
+          "pid": 12350,
+          "ppid": 12345,
+          "name": "child_of_12345",
+          "cmdline": "",
+          "user": "root",
+          "action": "FORK",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467869",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467869",
+          "pid": 12345,
+          "api_name": "clone",
+          "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+          "result": "12350",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467880",
+        "type": "process",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467880",
+          "pid": 12350,
+          "ppid": 12350,
+          "name": "bash",
+          "cmdline": "/usr/bin//bin/bash",
+          "user": "root",
+          "action": "CREATE",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467880",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467880",
+          "pid": 12350,
+          "api_name": "execve",
+          "args": "\"/usr/bin//bin/bash\", [\"/bin/bash\", \"-c sleep 5\"], 0xffff /* 40 vars */",
+          "result": "0",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467894",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467894",
+          "pid": 12345,
+          "api_name": "socket",
+          "args": "AF_INET, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_TCP",
+          "result": "4",
+          "category": "network",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467907",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467907",
+          "source_ip": "0.0.0.0",
+          "source_port": 0,
+          "dest_ip": "142.250.80.46",
+          "dest_port": 80,
+          "protocol": "TCP",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.467907",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467907",
+          "pid": 12345,
+          "api_name": "connect",
+          "args": "4, {sa_family=AF_INET, sin_port=htons(80), sin_addr=inet_addr(\"142.250.80.46\")}, 16",
+          "result": "-1 EINPROGRESS",
+          "category": "network",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468038",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468038",
+          "pid": 12345,
+          "api_name": "close",
+          "args": "4",
+          "result": "0",
+          "category": "other",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468048",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468048",
+          "pid": 12345,
+          "api_name": "socket",
+          "args": "AF_INET, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_TCP",
+          "result": "4",
+          "category": "network",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468060",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468060",
+          "source_ip": "0.0.0.0",
+          "source_port": 0,
+          "dest_ip": "93.184.216.34",
+          "dest_port": 443,
+          "protocol": "TCP",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468060",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468060",
+          "pid": 12345,
+          "api_name": "connect",
+          "args": "4, {sa_family=AF_INET, sin_port=htons(443), sin_addr=inet_addr(\"93.184.216.34\")}, 16",
+          "result": "-1 EINPROGRESS",
+          "category": "network",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468075",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468075",
+          "pid": 12345,
+          "api_name": "close",
+          "args": "4",
+          "result": "0",
+          "category": "other",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468084",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468084",
+          "pid": 12345,
+          "api_name": "socket",
+          "args": "AF_INET, SOCK_DGRAM|SOCK_CLOEXEC, IPPROTO_UDP",
+          "result": "4",
+          "category": "network",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468094",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468094",
+          "source_ip": "0.0.0.0",
+          "source_port": 0,
+          "dest_ip": "8.8.8.8",
+          "dest_port": 53,
+          "protocol": "TCP",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468094",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468094",
+          "pid": 12345,
+          "api_name": "connect",
+          "args": "4, {sa_family=AF_INET, sin_port=htons(53), sin_addr=inet_addr(\"8.8.8.8\")}, 16",
+          "result": "0",
+          "category": "network",
+          "suspicious": true
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468107",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468107",
+          "pid": 12345,
+          "api_name": "sendto",
+          "args": "4, \"\\x12\\x34\\x01\\x00\\x00\\x01...\\x00\\x00\\x01\", 28, MSG_NOSIGNAL, NULL, 0",
+          "result": "28",
+          "category": "network",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468118",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468118",
+          "pid": 12345,
+          "api_name": "close",
+          "args": "4",
+          "result": "0",
+          "category": "other",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468127",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468127",
+          "path": "/tmp/tmpfile_1234.tmp",
+          "action": "MODIFY",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468127",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468127",
+          "pid": 12345,
+          "api_name": "openat",
+          "args": "AT_FDCWD, \"/tmp/tmpfile_1234.tmp\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+          "result": "3",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468141",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468141",
+          "pid": 12345,
+          "api_name": "write",
+          "args": "3, \"temp data\\n\", 10",
+          "result": "10",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468150",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468150",
+          "pid": 12345,
+          "api_name": "close",
+          "args": "3",
+          "result": "0",
+          "category": "other",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468158",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468158",
+          "path": "/tmp/tmpfile_1234.tmp",
+          "action": "DELETE",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468158",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468158",
+          "pid": 12345,
+          "api_name": "unlink",
+          "args": "\"/tmp/tmpfile_1234.tmp\"",
+          "result": "0",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468172",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468172",
+          "path": "/tmp/sample_output_1234/config.dat",
+          "action": "MODIFY",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468172",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468172",
+          "pid": 12345,
+          "api_name": "openat",
+          "args": "AT_FDCWD, \"/tmp/sample_output_1234/config.dat\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+          "result": "3",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468184",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468184",
+          "pid": 12345,
+          "api_name": "write",
+          "args": "3, \"malware config data\\n\", 20",
+          "result": "20",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468193",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468193",
+          "pid": 12345,
+          "api_name": "write",
+          "args": "3, \"updated config\\n\", 15",
+          "result": "15",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468201",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468201",
+          "pid": 12345,
+          "api_name": "close",
+          "args": "3",
+          "result": "0",
+          "category": "other",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468210",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468210",
+          "path": "/tmp/sample_output_1234/config.dat",
+          "action": "RENAME",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468210",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468210",
+          "pid": 12345,
+          "api_name": "rename",
+          "args": "\"/tmp/sample_output_1234/config.dat\", \"/tmp/sample_output_1234/config_v2.dat\"",
+          "result": "0",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468223",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468223",
+          "path": "/tmp/sample_output_1234/credentials.txt",
+          "action": "MODIFY",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468223",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468223",
+          "pid": 12345,
+          "api_name": "openat",
+          "args": "AT_FDCWD, \"/tmp/sample_output_1234/credentials.txt\", O_RDWR|O_APPEND",
+          "result": "3",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468236",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468236",
+          "pid": 12345,
+          "api_name": "write",
+          "args": "3, \"exfiltrated at 2026\\n\", 22",
+          "result": "22",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468244",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468244",
+          "pid": 12345,
+          "api_name": "close",
+          "args": "3",
+          "result": "0",
+          "category": "other",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468253",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468253",
+          "path": "/tmp/sample_output_1234/c2_config.txt",
+          "action": "MODIFY",
+          "process": "12345",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468253",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468253",
+          "pid": 12345,
+          "api_name": "openat",
+          "args": "AT_FDCWD, \"/tmp/sample_output_1234/c2_config.txt\", O_WRONLY|O_CREAT|O_TRUNC, 0666",
+          "result": "3",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468266",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468266",
+          "pid": 12345,
+          "api_name": "write",
+          "args": "3, \"C2 server: c2.malware-domain.com:443\\n\", 42",
+          "result": "42",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468274",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468274",
+          "pid": 12345,
+          "api_name": "write",
+          "args": "3, \"exfil target: 192.168.1.100:8080\\n\", 38",
+          "result": "38",
+          "category": "file",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468282",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468282",
+          "pid": 12345,
+          "api_name": "close",
+          "args": "3",
+          "result": "0",
+          "category": "other",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468292",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468292",
+          "pid": 12346,
+          "api_name": "SIGNAL_SIGTERM",
+          "args": "12346  19:07:44.902472 --- SIGTERM {",
+          "result": "",
+          "category": "signal",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468301",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468301",
+          "pid": 12346,
+          "api_name": "PROCESS_END",
+          "args": "killed by SIGTERM",
+          "result": "",
+          "category": "process",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468310",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468310",
+          "pid": 12350,
+          "api_name": "SIGNAL_SIGTERM",
+          "args": "12350  19:07:44.902472 --- SIGTERM {",
+          "result": "",
+          "category": "signal",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468319",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468319",
+          "pid": 12350,
+          "api_name": "PROCESS_END",
+          "args": "killed by SIGTERM",
+          "result": "",
+          "category": "process",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468329",
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468329",
+          "pid": 12345,
+          "api_name": "PROCESS_END",
+          "args": "exited with 0",
+          "result": "",
+          "category": "process",
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468758",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468758",
+          "path": "/tmp/sample_output_1234/",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468770",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468770",
+          "path": "/tmp/sample_output_1234/config.dat",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468775",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468775",
+          "path": "/tmp/sample_output_1234/credentials.txt",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468778",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468778",
+          "path": "/tmp/sample_output_1234/subdir/",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468781",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468781",
+          "path": "/tmp/sample_output_1234/subdir/payload_1.bin",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468784",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468784",
+          "path": "/tmp/sample_output_1234/subdir/payload_2.bin",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468786",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468786",
+          "path": "/tmp/sample_output_1234/subdir/payload_3.bin",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468788",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468788",
+          "path": "/tmp/sample_output_1234/config_v2.dat",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468791",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468791",
+          "path": "/tmp/sample_output_1234/c2_config.txt",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468793",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468793",
+          "path": "/tmp/grandchild_12350.txt",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.468796",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468796",
+          "path": "/tmp/sample_output_1234/passwd_copy.txt",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469010",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.469010",
+          "path": "/tmp/tmpfile_1234.tmp",
+          "action": "DELETE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469015",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.469015",
+          "path": "/tmp/sample_output_1234/config.dat",
+          "action": "DELETE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469621",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.469621",
+          "source_ip": "1",
+          "source_port": 0,
+          "dest_ip": "192.168.80.46",
+          "dest_port": 52848,
+          "protocol": "TCP",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469632",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.469632",
+          "source_ip": "1",
+          "source_port": 0,
+          "dest_ip": "192.168.80.46",
+          "dest_port": 53032,
+          "protocol": "TCP",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469637",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.469637",
+          "source_ip": "0",
+          "source_port": 0,
+          "dest_ip": "192.168.80.46",
+          "dest_port": 53,
+          "protocol": "UDP",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469786",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.469786",
+          "source_ip": "192.168.80.46",
+          "source_port": 52848,
+          "dest_ip": "88.20.88.34",
+          "dest_port": 443,
+          "protocol": "UDP",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469793",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.469793",
+          "source_ip": "192.168.80.46",
+          "source_port": 53032,
+          "dest_ip": "93.184.216.34",
+          "dest_port": 443,
+          "protocol": "UDP",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:07:44.469798",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.469798",
+          "source_ip": "192.168.80.46",
+          "source_port": 53,
+          "dest_ip": "8.8.8.8",
+          "dest_port": 53,
+          "protocol": "UDP",
+          "process": null,
+          "suspicious": false
+        }
+      }
+    ],
+    "suspicious_events": [
+      {
+        "type": "process",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467880",
+          "pid": 12350,
+          "ppid": 12350,
+          "name": "bash",
+          "cmdline": "/usr/bin//bin/bash",
+          "user": "root",
+          "action": "CREATE",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467434",
+          "pid": 12345,
+          "api_name": "execve",
+          "args": "\"/sandbox/sample/crash_test.sh\", [\"crash_test.sh\"], 0xffff /* 40 vars */",
+          "result": "0",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467723",
+          "pid": 12345,
+          "api_name": "clone",
+          "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+          "result": "12346",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467735",
+          "pid": 12346,
+          "api_name": "execve",
+          "args": "\"/usr/bin/sleep\", [\"sleep\", \"30\"], 0xffff /* 40 vars */",
+          "result": "0",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467753",
+          "pid": 12345,
+          "api_name": "clone",
+          "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+          "result": "12347",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467763",
+          "pid": 12347,
+          "api_name": "execve",
+          "args": "\"/usr/bin/ls\", [\"ls\", \"-la /tmp\"], 0xffff /* 40 vars */",
+          "result": "0",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467795",
+          "pid": 12345,
+          "api_name": "clone",
+          "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+          "result": "12348",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467805",
+          "pid": 12348,
+          "api_name": "execve",
+          "args": "\"/usr/bin/whoami\", [\"whoami\", \"\"], 0xffff /* 40 vars */",
+          "result": "0",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467832",
+          "pid": 12345,
+          "api_name": "clone",
+          "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+          "result": "12349",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467842",
+          "pid": 12349,
+          "api_name": "execve",
+          "args": "\"/usr/bin/cat\", [\"cat\", \"/etc/passwd\"], 0xffff /* 40 vars */",
+          "result": "0",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467869",
+          "pid": 12345,
+          "api_name": "clone",
+          "args": "child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xffff",
+          "result": "12350",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467880",
+          "pid": 12350,
+          "api_name": "execve",
+          "args": "\"/usr/bin//bin/bash\", [\"/bin/bash\", \"-c sleep 5\"], 0xffff /* 40 vars */",
+          "result": "0",
+          "category": "process",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.467907",
+          "pid": 12345,
+          "api_name": "connect",
+          "args": "4, {sa_family=AF_INET, sin_port=htons(80), sin_addr=inet_addr(\"142.250.80.46\")}, 16",
+          "result": "-1 EINPROGRESS",
+          "category": "network",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468060",
+          "pid": 12345,
+          "api_name": "connect",
+          "args": "4, {sa_family=AF_INET, sin_port=htons(443), sin_addr=inet_addr(\"93.184.216.34\")}, 16",
+          "result": "-1 EINPROGRESS",
+          "category": "network",
+          "suspicious": true
+        }
+      },
+      {
+        "type": "api",
+        "data": {
+          "timestamp": "2026-06-14T19:07:44.468094",
+          "pid": 12345,
+          "api_name": "connect",
+          "args": "4, {sa_family=AF_INET, sin_port=htons(53), sin_addr=inet_addr(\"8.8.8.8\")}, 16",
+          "result": "0",
+          "category": "network",
+          "suspicious": true
+        }
+      }
+    ],
+    "warnings": []
+  },
+  "graphs": {},
+  "dynamic_analysis": {
+    "performed": true,
+    "valid": true,
+    "status": "正常",
+    "warnings": [],
+    "error": null
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "report_id": "report_20260614_190916",
+  "generated_at": "2026-06-14T19:09:16.872167",
+  "risk_score": 0,
+  "risk_level": "UNKNOWN",
+  "file_info": {
+    "path": "D:\\code\\TraeProjects\\1368\\test_samples\\crash_test.sh",
+    "name": "crash_test.sh",
+    "size": 328,
+    "created": "2026-06-14T19:01:01.724183",
+    "modified": "2026-06-14T19:01:01.875754",
+    "md5": "15e35e2605d2a415343d4cec798e3b18",
+    "sha1": "aeef05ace37530ccc4e40ee0beedfbc0e98b1cc7",
+    "sha256": "7cbbc0ea07366174b5624835f6281e3e7112f6063571f11b3369baaebeacd6c6"
+  },
+  "yara": {
+    "file_path": "test_samples\\crash_test.sh",
+    "scanned": false,
+    "rules_loaded": 0,
+    "scan_time": 0.0,
+    "matches": [],
+    "errors": [
+      "yara-python not installed"
+    ],
+    "is_malicious": false,
+    "matched_rules": [],
+    "families": []
+  },
+  "virustotal": {},
+  "sandbox": {
+    "container_id": "fallback_6e178056a27e",
+    "start_time": "2026-06-14T19:09:15.725729",
+    "end_time": "2026-06-14T19:09:16.869968",
+    "exit_code": -9,
+    "temp_dir": "D:\\code\\TraeProjects\\1368\\temp\\session_6e178056a27e",
+    "stdout_preview": "",
+    "stderr_preview": "Killed by signal 9\n"
+  },
+  "behavior": {
+    "summary": {
+      "total_file_events": 0,
+      "total_network_events": 0,
+      "total_process_events": 0,
+      "total_registry_events": 0,
+      "total_api_events": 0,
+      "suspicious_count": 0,
+      "unique_ips": [],
+      "unique_processes": [],
+      "unique_files": []
+    },
+    "file_events": [],
+    "network_events": [],
+    "process_events": [],
+    "registry_events": [],
+    "api_events": [],
+    "process_tree": {},
+    "timeline": [],
+    "suspicious_events": [],
+    "warnings": [
+      "未找到 strace 日志文件",
+      "未找到 inotify 文件事件日志",
+      "未检测到任何行为事件，动态分析可能未采集到有效数据"
+    ]
+  },
+  "graphs": {},
+  "dynamic_analysis": {
+    "performed": true,
+    "valid": false,
+    "status": "未采集到有效数据",
+    "warnings": [
+      "未找到 strace 日志文件",
+      "未找到 inotify 文件事件日志",
+      "未检测到任何行为事件，动态分析可能未采集到有效数据"
+    ],
+    "error": null
+  }
+}

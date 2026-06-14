@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>恶意软件行为分析报告 - benign_test.sh</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #0a0e17;
+    color: #e0e6ed;
+    line-height: 1.6;
+}
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 24px;
+    border: 1px solid #2a2a4a;
+}
+header h1 { font-size: 28px; margin-bottom: 8px; color: #fff; }
+header .meta { color: #8892a6; font-size: 14px; }
+.risk-banner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    border-left: 4px solid #f1c40f;
+}
+.risk-score {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #f1c40f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+    color: #fff;
+}
+.risk-details h2 { color: #f1c40f; font-size: 32px; }
+.risk-details p { color: #8892a6; }
+section {
+    background: #131a2a;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    border: 1px solid #1e2738;
+}
+section h2 {
+    font-size: 20px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #1e2738;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.info-card {
+    background: #0f1520;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #1e2738;
+}
+.info-card .label { color: #8892a6; font-size: 12px; text-transform: uppercase; margin-bottom: 4px; }
+.info-card .value { color: #fff; font-size: 14px; font-family: monospace; word-break: break-all; }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 13px;
+}
+th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid #1e2738;
+}
+th { background: #0f1520; color: #8892a6; font-weight: 600; }
+tr:hover { background: #0f1520; }
+.suspicious {
+    background: rgba(231, 76, 60, 0.1) !important;
+}
+.suspicious td:first-child::before {
+    content: "⚠ ";
+    color: #e74c3c;
+}
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.badge-critical { background: #e74c3c; color: #fff; }
+.badge-high { background: #e67e22; color: #fff; }
+.badge-medium { background: #f1c40f; color: #000; }
+.badge-low { background: #3498db; color: #fff; }
+.badge-ok { background: #2ecc71; color: #fff; }
+.badge-info { background: #3498db; color: #fff; }
+.graph-container {
+    text-align: center;
+    margin: 20px 0;
+}
+.graph-container img {
+    max-width: 100%;
+    border-radius: 8px;
+    border: 1px solid #1e2738;
+}
+.tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.tab {
+    padding: 8px 16px;
+    background: #0f1520;
+    border: 1px solid #1e2738;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #8892a6;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+.tab:hover { background: #1a2438; color: #fff; }
+.tab.active { background: #2a3a5a; color: #fff; border-color: #3a4a6a; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.hash { font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; }
+code {
+    background: #0f1520;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 12px;
+}
+.summary-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.stat-card {
+    text-align: center;
+    padding: 16px;
+    background: #0f1520;
+    border-radius: 8px;
+    border: 1px solid #1e2738;
+}
+.stat-card .num { font-size: 24px; font-weight: bold; color: #fff; }
+.stat-card .label { color: #8892a6; font-size: 12px; text-transform: uppercase; margin-top: 4px; }
+.warning-box {
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px solid #e74c3c;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    border-left: 4px solid #e74c3c;
+}
+.warning-box h3 {
+    color: #e74c3c;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+.warning-box ul {
+    margin: 8px 0 0 20px;
+    color: #e0e6ed;
+}
+.warning-box li {
+    margin-bottom: 4px;
+    font-size: 13px;
+}
+.info-box {
+    background: rgba(52, 152, 219, 0.1);
+    border: 1px solid #3498db;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    border-left: 4px solid #3498db;
+}
+.info-box p {
+    color: #e0e6ed;
+    margin: 0;
+}
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #555;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🔍 恶意软件行为分析报告</h1>
+        <div class="meta">
+            报告 ID: report_20260614_191226 | 生成时间: 2026-06-14T19:12:26.565118
+        </div>
+        <div class="risk-banner">
+            <div class="risk-score">30</div>
+            <div class="risk-details">
+                <h2>MEDIUM RISK</h2>
+                <p>基于 YARA 规则、VirusTotal 检测和行为分析综合评估</p>
+            </div>
+        </div>
+    </header>
+
+    <section>
+        <h2>📄 文件信息</h2>
+        <div class="grid">
+            <div class="info-card">
+                <div class="label">文件名</div>
+                <div class="value">benign_test.sh</div>
+            </div>
+            <div class="info-card">
+                <div class="label">文件路径</div>
+                <div class="value">D:\code\TraeProjects\1368\test_samples\benign_test.sh</div>
+            </div>
+            <div class="info-card">
+                <div class="label">文件大小</div>
+                <div class="value">4.11 KB</div>
+            </div>
+            <div class="info-card">
+                <div class="label">创建时间</div>
+                <div class="value">2026-06-14T19:00:56.227906</div>
+            </div>
+            <div class="info-card">
+                <div class="label">修改时间</div>
+                <div class="value">2026-06-14T19:00:56.899063</div>
+            </div>
+            <div class="info-card">
+                <div class="label">MD5</div>
+                <div class="value hash">4ade94bcc60c07a62327aa1a9ab2e832</div>
+            </div>
+            <div class="info-card">
+                <div class="label">SHA1</div>
+                <div class="value hash">240927c1550a2d61efd680931e9de65f1b00c1cd</div>
+            </div>
+            <div class="info-card">
+                <div class="label">SHA256</div>
+                <div class="value hash">88aa7462a6bf8c4ea3587cbb5e2fce3b9efffbaf5b8240a0edc0699834c9d20b</div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section>
+        <h2>🏗️ 动态分析</h2>
+        <div class="info-box">
+            <h3>✅ 动态分析状态: <span class="badge badge-ok">正常</span></h3>
+            <p style="margin-top:8px;">容器ID: <code>fallback_607</code> | 退出码: <code>0</code></p>
+            
+            
+            
+        </div>
+        <div class="summary-stats" style="margin-top:16px;">
+            <div class="stat-card">
+                <div class="num">25</div>
+                <div class="label">文件事件</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">9</div>
+                <div class="label">网络事件</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">11</div>
+                <div class="label">进程事件</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">62</div>
+                <div class="label">API调用</div>
+            </div>
+        </div>
+    </section>
+        
+
+    
+    <section>
+        <h2>🦠 YARA 规则扫描</h2>
+        <p style="color:#8892a6;">未执行 YARA 扫描: yara-python not installed</p>
+    </section>
+            
+    
+    <section>
+        <h2>🌍 VirusTotal 查询</h2>
+        <p style="color:#8892a6;">未执行 VirusTotal 查询: 未启用</p>
+    </section>
+            
+    
+    <section>
+        <h2>⚠ 可疑操作 (15)</h2>
+        <div class="tabs"><div class="tab active" data-tab-group="suspicious" data-tab-target="process">⚙ 进程 (1)</div><div class="tab " data-tab-group="suspicious" data-tab-target="api">🔧 API调用 (14)</div></div>
+        
+            <div class="tab-content active" data-tab-group="suspicious" data-tab-id="process">
+                <table>
+                    <thead><tr><th>时间</th><th>进程名</th><th>PID</th><th>命令行</th></tr></thead>
+                    <tbody>
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.562931</td>
+                        <td>bash</td>
+                        <td>12350</td>
+                        <td style="font-family:monospace;font-size:12px;">/usr/bin//bin/bash</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="tab-content " data-tab-group="suspicious" data-tab-id="api">
+                <table>
+                    <thead><tr><th>时间</th><th>PID</th><th>API名称</th></tr></thead>
+                    <tbody>
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.562385</td>
+                        <td>12345</td>
+                        <td><code>execve</code></td>
+                    </tr>
+                    
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.562750</td>
+                        <td>12345</td>
+                        <td><code>clone</code></td>
+                    </tr>
+                    
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.562760</td>
+                        <td>12346</td>
+                        <td><code>execve</code></td>
+                    </tr>
+                    
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.562782</td>
+                        <td>12345</td>
+                        <td><code>clone</code></td>
+                    </tr>
+                    
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.562792</td>
+                        <td>12347</td>
+                        <td><code>execve</code></td>
+                    </tr>
+                    
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.562824</td>
+                        <td>12345</td>
+                        <td><code>clone</code></td>
+                    </tr>
+                    
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.562836</td>
+                        <td>12348</td>
+                        <td><code>execve</code></td>
+                    </tr>
+                    
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.562866</td>
+                        <td>12345</td>
+                        <td><code>clone</code></td>
+                    </tr>
+                    
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.562876</td>
+                        <td>12349</td>
+                        <td><code>execve</code></td>
+                    </tr>
+                    
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.562901</td>
+                        <td>12345</td>
+                        <td><code>clone</code></td>
+                    </tr>
+                    
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.562931</td>
+                        <td>12350</td>
+                        <td><code>execve</code></td>
+                    </tr>
+                    
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.562998</td>
+                        <td>12345</td>
+                        <td><code>connect</code></td>
+                    </tr>
+                    
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.563208</td>
+                        <td>12345</td>
+                        <td><code>connect</code></td>
+                    </tr>
+                    
+                    <tr class="suspicious">
+                        <td>2026-06-14T19:12:26.563245</td>
+                        <td>12345</td>
+                        <td><code>connect</code></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+    </section>
+    
+
+    
+
+    
+    <section>
+        <h2>⏱ 行为时间线 (107)</h2>
+        <div style="max-height:600px;overflow-y:auto;padding-right:8px;">
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #3498db;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562385</span>
+                <span style="margin:0 8px;">⚙</span>
+                <span style="color:#fff;">CREATE benign_test.sh (PID: 12345)</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562385</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">execve("/sandbox/sample/benign_test.sh", ["benign_test.sh"], 0xffff) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562489</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">MODIFY: /tmp/sample_output_1234/</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562489</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">openat(AT_FDCWD, "/tmp/sample_output_1234/", O_WRONLY|O_CREAT|O_TRU) = 3</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562533</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">write(3, "malware config data\n", 20) = 20</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562546</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">close(3) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562559</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">MODIFY: /tmp/sample_output_1234/credentials.txt</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562559</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">openat(AT_FDCWD, "/tmp/sample_output_1234/credentials.txt", O_WRONL) = 3</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562581</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">write(3, "stolen password 12345\n", 23) = 23</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562614</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">write(3, "additional stolen data\n", 24) = 24</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562646</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">close(3) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562662</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">CREATE: /tmp/sample_output_1234/subdir</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562662</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">mkdir("/tmp/sample_output_1234/subdir", 0755) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562679</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">MODIFY: /tmp/sample_output_1234/subdir/payload_1.bin</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562679</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">openat(AT_FDCWD, "/tmp/sample_output_1234/subdir/payload_1.bin", O_) = 3</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562690</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">write(3, "payload part 1\n", 15) = 15</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562697</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">close(3) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562706</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">MODIFY: /tmp/sample_output_1234/subdir/payload_2.bin</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562706</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">openat(AT_FDCWD, "/tmp/sample_output_1234/subdir/payload_2.bin", O_) = 3</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562715</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">write(3, "payload part 2\n", 15) = 15</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562721</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">close(3) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562727</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">MODIFY: /tmp/sample_output_1234/subdir/payload_3.bin</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562727</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">openat(AT_FDCWD, "/tmp/sample_output_1234/subdir/payload_3.bin", O_) = 3</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562735</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">write(3, "payload part 3\n", 15) = 15</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562743</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">close(3) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #3498db;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562750</span>
+                <span style="margin:0 8px;">⚙</span>
+                <span style="color:#fff;">FORK child_of_12345 (PID: 12346)</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562750</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SET) = 12346</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #3498db;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562760</span>
+                <span style="margin:0 8px;">⚙</span>
+                <span style="color:#fff;">CREATE sleep (PID: 12346)</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562760</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">execve("/usr/bin/sleep", ["sleep", "30"], 0xffff /* 40 vars */) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #3498db;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562782</span>
+                <span style="margin:0 8px;">⚙</span>
+                <span style="color:#fff;">FORK child_of_12345 (PID: 12347)</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562782</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SET) = 12347</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #3498db;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562792</span>
+                <span style="margin:0 8px;">⚙</span>
+                <span style="color:#fff;">CREATE ls (PID: 12347)</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562792</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">execve("/usr/bin/ls", ["ls", "-la /tmp"], 0xffff /* 40 vars */) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562814</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">PROCESS_END(exited with 0) = </span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #3498db;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562824</span>
+                <span style="margin:0 8px;">⚙</span>
+                <span style="color:#fff;">FORK child_of_12345 (PID: 12348)</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562824</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SET) = 12348</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #3498db;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562836</span>
+                <span style="margin:0 8px;">⚙</span>
+                <span style="color:#fff;">CREATE whoami (PID: 12348)</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562836</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">execve("/usr/bin/whoami", ["whoami", ""], 0xffff /* 40 vars */) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562854</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">PROCESS_END(exited with 0) = </span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #3498db;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562866</span>
+                <span style="margin:0 8px;">⚙</span>
+                <span style="color:#fff;">FORK child_of_12345 (PID: 12349)</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562866</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SET) = 12349</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #3498db;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562876</span>
+                <span style="margin:0 8px;">⚙</span>
+                <span style="color:#fff;">CREATE cat (PID: 12349)</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562876</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">execve("/usr/bin/cat", ["cat", "/etc/passwd"], 0xffff /* 40 vars */) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562892</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">PROCESS_END(exited with 0) = </span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #3498db;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562901</span>
+                <span style="margin:0 8px;">⚙</span>
+                <span style="color:#fff;">FORK child_of_12345 (PID: 12350)</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562901</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SET) = 12350</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #3498db;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562931</span>
+                <span style="margin:0 8px;">⚙</span>
+                <span style="color:#fff;">CREATE bash (PID: 12350)</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562931</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">execve("/usr/bin//bin/bash", ["/bin/bash", "-c sleep 5"], 0xffff /*) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562976</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">socket(AF_INET, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_TCP) = 4</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e67e22;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562998</span>
+                <span style="margin:0 8px;">🌐</span>
+                <span style="color:#fff;">TCP 142.250.80.46:80</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.562998</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">connect(4, {sa_family=AF_INET, sin_port=htons(80), sin_addr=inet_add) = -1 EINPROGRESS</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563180</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">close(4) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563195</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">socket(AF_INET, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_TCP) = 4</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e67e22;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563208</span>
+                <span style="margin:0 8px;">🌐</span>
+                <span style="color:#fff;">TCP 93.184.216.34:443</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563208</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">connect(4, {sa_family=AF_INET, sin_port=htons(443), sin_addr=inet_ad) = -1 EINPROGRESS</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563225</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">close(4) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563235</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">socket(AF_INET, SOCK_DGRAM|SOCK_CLOEXEC, IPPROTO_UDP) = 4</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e67e22;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563245</span>
+                <span style="margin:0 8px;">🌐</span>
+                <span style="color:#fff;">TCP 8.8.8.8:53</span>
+            </div>
+            
+            <div class="suspicious" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563245</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">connect(4, {sa_family=AF_INET, sin_port=htons(53), sin_addr=inet_add) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563258</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">sendto(4, "\x12\x34\x01\x00\x00\x01...\x00\x00\x01", 28, MSG_NOSIGN) = 28</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563268</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">close(4) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563277</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">MODIFY: /tmp/tmpfile_1234.tmp</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563277</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">openat(AT_FDCWD, "/tmp/tmpfile_1234.tmp", O_WRONLY|O_CREAT|O_TRUNC,) = 3</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563294</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">write(3, "temp data\n", 10) = 10</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563306</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">close(3) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563315</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">DELETE: /tmp/tmpfile_1234.tmp</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563315</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">unlink("/tmp/tmpfile_1234.tmp") = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563329</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">MODIFY: /tmp/sample_output_1234/config.dat</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563329</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">openat(AT_FDCWD, "/tmp/sample_output_1234/config.dat", O_WRONLY|O_C) = 3</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563342</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">write(3, "malware config data\n", 20) = 20</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563351</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">write(3, "updated config\n", 15) = 15</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563359</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">close(3) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563369</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">RENAME: /tmp/sample_output_1234/config.dat</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563369</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">rename("/tmp/sample_output_1234/config.dat", "/tmp/sample_output_12) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563380</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">MODIFY: /tmp/sample_output_1234/credentials.txt</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563380</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">openat(AT_FDCWD, "/tmp/sample_output_1234/credentials.txt", O_RDWR|) = 3</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563392</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">write(3, "exfiltrated at 2026\n", 22) = 22</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563401</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">close(3) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563409</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">MODIFY: /tmp/sample_output_1234/c2_config.txt</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563409</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">openat(AT_FDCWD, "/tmp/sample_output_1234/c2_config.txt", O_WRONLY|) = 3</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563423</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">write(3, "C2 server: c2.malware-domain.com:443\n", 42) = 42</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563432</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">write(3, "exfil target: 192.168.1.100:8080\n", 38) = 38</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563440</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">close(3) = 0</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563450</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">SIGNAL_SIGTERM(12346  19:12:26.997440 --- SIGTERM {) = </span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563461</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">PROCESS_END(killed by SIGTERM) = </span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563470</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">SIGNAL_SIGTERM(12350  19:12:26.997440 --- SIGTERM {) = </span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563481</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">PROCESS_END(killed by SIGTERM) = </span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e74c3c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563493</span>
+                <span style="margin:0 8px;">🔧</span>
+                <span style="color:#fff;">PROCESS_END(exited with 0) = </span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563878</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">CREATE: /tmp/sample_output_1234/</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563891</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">CREATE: /tmp/sample_output_1234/config.dat</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563896</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">CREATE: /tmp/sample_output_1234/credentials.txt</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563899</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">CREATE: /tmp/sample_output_1234/subdir/</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563902</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">CREATE: /tmp/sample_output_1234/subdir/payload_1.bin</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563905</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">CREATE: /tmp/sample_output_1234/subdir/payload_2.bin</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563907</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">CREATE: /tmp/sample_output_1234/subdir/payload_3.bin</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563910</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">CREATE: /tmp/sample_output_1234/config_v2.dat</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563912</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">CREATE: /tmp/sample_output_1234/c2_config.txt</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563915</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">CREATE: /tmp/grandchild_12350.txt</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.563917</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">CREATE: /tmp/sample_output_1234/passwd_copy.txt</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.564088</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">DELETE: /tmp/tmpfile_1234.tmp</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #1abc9c;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.564094</span>
+                <span style="margin:0 8px;">📁</span>
+                <span style="color:#fff;">DELETE: /tmp/sample_output_1234/config.dat</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e67e22;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.564376</span>
+                <span style="margin:0 8px;">🌐</span>
+                <span style="color:#fff;">TCP 192.168.80.46:52848</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e67e22;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.564385</span>
+                <span style="margin:0 8px;">🌐</span>
+                <span style="color:#fff;">TCP 192.168.80.46:53032</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e67e22;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.564389</span>
+                <span style="margin:0 8px;">🌐</span>
+                <span style="color:#fff;">UDP 192.168.80.46:53</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e67e22;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.564479</span>
+                <span style="margin:0 8px;">🌐</span>
+                <span style="color:#fff;">UDP 88.20.88.34:443</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e67e22;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.564485</span>
+                <span style="margin:0 8px;">🌐</span>
+                <span style="color:#fff;">UDP 93.184.216.34:443</span>
+            </div>
+            
+            <div class="" style="
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-left: 3px solid #e67e22;
+                background: rgba(255,255,255,0.02);
+                border-radius: 0 4px 4px 0;
+                font-size: 13px;
+            ">
+                <span style="color:#8892a6;font-family:monospace;font-size:11px;">2026-06-14T19:12:26.564490</span>
+                <span style="margin:0 8px;">🌐</span>
+                <span style="color:#fff;">UDP 8.8.8.8:53</span>
+            </div>
+            
+        </div>
+        
+    </section>
+    
+
+    
+    <section>
+        <h2>📋 行为详情</h2>
+        <div class="tabs"><div class="tab active" data-tab-group="behavior" data-tab-target="file">📁 文件系统 (25)</div><div class="tab " data-tab-group="behavior" data-tab-target="network">🌐 网络连接 (9)</div><div class="tab " data-tab-group="behavior" data-tab-target="process">⚙ 进程创建 (11)</div><div class="tab " data-tab-group="behavior" data-tab-target="registry">🔑 注册表 (0)</div><div class="tab " data-tab-group="behavior" data-tab-target="api">🔧 API调用 (62)</div></div>
+        <div class="tab-content active" data-tab-group="behavior" data-tab-id="file">
+        <table>
+            <thead><tr><th>时间</th><th>操作</th><th>路径</th></tr></thead>
+            <tbody>
+            <tr class="">
+                <td>2026-06-14T19:12:26.562489</td>
+                <td><span class="badge badge-info">MODIFY</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562559</td>
+                <td><span class="badge badge-info">MODIFY</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/credentials.txt</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562662</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/subdir</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562679</td>
+                <td><span class="badge badge-info">MODIFY</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/subdir/payload_1.bin</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562706</td>
+                <td><span class="badge badge-info">MODIFY</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/subdir/payload_2.bin</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562727</td>
+                <td><span class="badge badge-info">MODIFY</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/subdir/payload_3.bin</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563277</td>
+                <td><span class="badge badge-info">MODIFY</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/tmpfile_1234.tmp</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563315</td>
+                <td><span class="badge badge-info">DELETE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/tmpfile_1234.tmp</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563329</td>
+                <td><span class="badge badge-info">MODIFY</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/config.dat</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563369</td>
+                <td><span class="badge badge-info">RENAME</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/config.dat</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563380</td>
+                <td><span class="badge badge-info">MODIFY</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/credentials.txt</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563409</td>
+                <td><span class="badge badge-info">MODIFY</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/c2_config.txt</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563878</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563891</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/config.dat</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563896</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/credentials.txt</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563899</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/subdir/</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563902</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/subdir/payload_1.bin</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563905</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/subdir/payload_2.bin</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563907</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/subdir/payload_3.bin</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563910</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/config_v2.dat</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563912</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/c2_config.txt</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563915</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/grandchild_12350.txt</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563917</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/passwd_copy.txt</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.564088</td>
+                <td><span class="badge badge-info">DELETE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/tmpfile_1234.tmp</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.564094</td>
+                <td><span class="badge badge-info">DELETE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/tmp/sample_output_1234/config.dat</td>
+            </tr>
+            </tbody>
+        </table>
+        
+        </div><div class="tab-content " data-tab-group="behavior" data-tab-id="network">
+        <table>
+            <thead><tr><th>时间</th><th>协议</th><th>源地址</th><th>目标地址</th></tr></thead>
+            <tbody>
+            <tr class="">
+                <td>2026-06-14T19:12:26.562998</td>
+                <td>TCP</td>
+                <td>0.0.0.0:0</td>
+                <td>142.250.80.46:80</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563208</td>
+                <td>TCP</td>
+                <td>0.0.0.0:0</td>
+                <td>93.184.216.34:443</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563245</td>
+                <td>TCP</td>
+                <td>0.0.0.0:0</td>
+                <td>8.8.8.8:53</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.564376</td>
+                <td>TCP</td>
+                <td>1:0</td>
+                <td>192.168.80.46:52848</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.564385</td>
+                <td>TCP</td>
+                <td>1:0</td>
+                <td>192.168.80.46:53032</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.564389</td>
+                <td>UDP</td>
+                <td>0:0</td>
+                <td>192.168.80.46:53</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.564479</td>
+                <td>UDP</td>
+                <td>192.168.80.46:52848</td>
+                <td>88.20.88.34:443</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.564485</td>
+                <td>UDP</td>
+                <td>192.168.80.46:53032</td>
+                <td>93.184.216.34:443</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.564490</td>
+                <td>UDP</td>
+                <td>192.168.80.46:53</td>
+                <td>8.8.8.8:53</td>
+            </tr>
+            </tbody>
+        </table>
+        
+        </div><div class="tab-content " data-tab-group="behavior" data-tab-id="process">
+        <table>
+            <thead><tr><th>时间</th><th>进程名</th><th>PID</th><th>PPID</th><th>操作</th><th>命令行</th></tr></thead>
+            <tbody>
+            <tr class="">
+                <td>2026-06-14T19:12:26.562385</td>
+                <td>benign_test.sh</td>
+                <td>12345</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/sandbox/sample/benign_test.sh</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562750</td>
+                <td>child_of_12345</td>
+                <td>12346</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">FORK</span></td>
+                <td style="font-family:monospace;font-size:12px;"></td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562760</td>
+                <td>sleep</td>
+                <td>12346</td>
+                <td>12346</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/usr/bin/sleep</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562782</td>
+                <td>child_of_12345</td>
+                <td>12347</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">FORK</span></td>
+                <td style="font-family:monospace;font-size:12px;"></td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562792</td>
+                <td>ls</td>
+                <td>12347</td>
+                <td>12347</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/usr/bin/ls</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562824</td>
+                <td>child_of_12345</td>
+                <td>12348</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">FORK</span></td>
+                <td style="font-family:monospace;font-size:12px;"></td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562836</td>
+                <td>whoami</td>
+                <td>12348</td>
+                <td>12348</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/usr/bin/whoami</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562866</td>
+                <td>child_of_12345</td>
+                <td>12349</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">FORK</span></td>
+                <td style="font-family:monospace;font-size:12px;"></td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562876</td>
+                <td>cat</td>
+                <td>12349</td>
+                <td>12349</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/usr/bin/cat</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562901</td>
+                <td>child_of_12345</td>
+                <td>12350</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">FORK</span></td>
+                <td style="font-family:monospace;font-size:12px;"></td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.562931</td>
+                <td>bash</td>
+                <td>12350</td>
+                <td>12350</td>
+                <td><span class="badge badge-info">CREATE</span></td>
+                <td style="font-family:monospace;font-size:12px;">/usr/bin//bin/bash</td>
+            </tr>
+            </tbody>
+        </table>
+        
+        </div><div class="tab-content " data-tab-group="behavior" data-tab-id="registry"><p style="color:#8892a6;">无注册表事件</p></div><div class="tab-content " data-tab-group="behavior" data-tab-id="api">
+        <table>
+            <thead><tr><th>时间</th><th>PID</th><th>类别</th><th>API</th><th>参数</th></tr></thead>
+            <tbody>
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.562385</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>execve</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">"/sandbox/sample/benign_test.sh", ["benign_test.sh"], 0xffff</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562489</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>openat</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">AT_FDCWD, "/tmp/sample_output_1234/", O_WRONLY|O_CREAT|O_TRU</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562533</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>write</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3, "malware config data\n", 20</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562546</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">other</span></td>
+                <td><code>close</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562559</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>openat</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">AT_FDCWD, "/tmp/sample_output_1234/credentials.txt", O_WRONL</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562581</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>write</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3, "stolen password 12345\n", 23</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562614</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>write</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3, "additional stolen data\n", 24</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562646</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">other</span></td>
+                <td><code>close</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562662</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>mkdir</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">"/tmp/sample_output_1234/subdir", 0755</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562679</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>openat</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">AT_FDCWD, "/tmp/sample_output_1234/subdir/payload_1.bin", O_</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562690</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>write</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3, "payload part 1\n", 15</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562697</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">other</span></td>
+                <td><code>close</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562706</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>openat</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">AT_FDCWD, "/tmp/sample_output_1234/subdir/payload_2.bin", O_</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562715</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>write</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3, "payload part 2\n", 15</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562721</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">other</span></td>
+                <td><code>close</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562727</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>openat</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">AT_FDCWD, "/tmp/sample_output_1234/subdir/payload_3.bin", O_</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562735</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>write</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3, "payload part 3\n", 15</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562743</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">other</span></td>
+                <td><code>close</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3</td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.562750</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>clone</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SET</td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.562760</td>
+                <td>12346</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>execve</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">"/usr/bin/sleep", ["sleep", "30"], 0xffff /* 40 vars */</td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.562782</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>clone</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SET</td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.562792</td>
+                <td>12347</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>execve</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">"/usr/bin/ls", ["ls", "-la /tmp"], 0xffff /* 40 vars */</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562814</td>
+                <td>12347</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>PROCESS_END</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">exited with 0</td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.562824</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>clone</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SET</td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.562836</td>
+                <td>12348</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>execve</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">"/usr/bin/whoami", ["whoami", ""], 0xffff /* 40 vars */</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562854</td>
+                <td>12348</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>PROCESS_END</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">exited with 0</td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.562866</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>clone</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SET</td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.562876</td>
+                <td>12349</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>execve</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">"/usr/bin/cat", ["cat", "/etc/passwd"], 0xffff /* 40 vars */</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562892</td>
+                <td>12349</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>PROCESS_END</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">exited with 0</td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.562901</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>clone</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SET</td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.562931</td>
+                <td>12350</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>execve</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">"/usr/bin//bin/bash", ["/bin/bash", "-c sleep 5"], 0xffff /*</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.562976</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">network</span></td>
+                <td><code>socket</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">AF_INET, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_TCP</td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.562998</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">network</span></td>
+                <td><code>connect</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">4, {sa_family=AF_INET, sin_port=htons(80), sin_addr=inet_add</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563180</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">other</span></td>
+                <td><code>close</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">4</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563195</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">network</span></td>
+                <td><code>socket</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">AF_INET, SOCK_STREAM|SOCK_CLOEXEC, IPPROTO_TCP</td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.563208</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">network</span></td>
+                <td><code>connect</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">4, {sa_family=AF_INET, sin_port=htons(443), sin_addr=inet_ad</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563225</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">other</span></td>
+                <td><code>close</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">4</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563235</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">network</span></td>
+                <td><code>socket</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">AF_INET, SOCK_DGRAM|SOCK_CLOEXEC, IPPROTO_UDP</td>
+            </tr>
+            
+            <tr class="suspicious">
+                <td>2026-06-14T19:12:26.563245</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">network</span></td>
+                <td><code>connect</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">4, {sa_family=AF_INET, sin_port=htons(53), sin_addr=inet_add</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563258</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">network</span></td>
+                <td><code>sendto</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">4, "\x12\x34\x01\x00\x00\x01...\x00\x00\x01", 28, MSG_NOSIGN</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563268</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">other</span></td>
+                <td><code>close</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">4</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563277</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>openat</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">AT_FDCWD, "/tmp/tmpfile_1234.tmp", O_WRONLY|O_CREAT|O_TRUNC,</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563294</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>write</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3, "temp data\n", 10</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563306</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">other</span></td>
+                <td><code>close</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563315</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>unlink</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">"/tmp/tmpfile_1234.tmp"</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563329</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>openat</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">AT_FDCWD, "/tmp/sample_output_1234/config.dat", O_WRONLY|O_C</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563342</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>write</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3, "malware config data\n", 20</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563351</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>write</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3, "updated config\n", 15</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563359</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">other</span></td>
+                <td><code>close</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563369</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>rename</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">"/tmp/sample_output_1234/config.dat", "/tmp/sample_output_12</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563380</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>openat</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">AT_FDCWD, "/tmp/sample_output_1234/credentials.txt", O_RDWR|</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563392</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>write</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3, "exfiltrated at 2026\n", 22</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563401</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">other</span></td>
+                <td><code>close</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563409</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>openat</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">AT_FDCWD, "/tmp/sample_output_1234/c2_config.txt", O_WRONLY|</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563423</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>write</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3, "C2 server: c2.malware-domain.com:443\n", 42</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563432</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">file</span></td>
+                <td><code>write</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3, "exfil target: 192.168.1.100:8080\n", 38</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563440</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">other</span></td>
+                <td><code>close</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">3</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563450</td>
+                <td>12346</td>
+                <td><span class="badge badge-info">signal</span></td>
+                <td><code>SIGNAL_SIGTERM</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">12346  19:12:26.997440 --- SIGTERM {</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563461</td>
+                <td>12346</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>PROCESS_END</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">killed by SIGTERM</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563470</td>
+                <td>12350</td>
+                <td><span class="badge badge-info">signal</span></td>
+                <td><code>SIGNAL_SIGTERM</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">12350  19:12:26.997440 --- SIGTERM {</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563481</td>
+                <td>12350</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>PROCESS_END</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">killed by SIGTERM</td>
+            </tr>
+            
+            <tr class="">
+                <td>2026-06-14T19:12:26.563493</td>
+                <td>12345</td>
+                <td><span class="badge badge-info">process</span></td>
+                <td><code>PROCESS_END</code></td>
+                <td style="font-family:monospace;font-size:11px;color:#8892a6;">exited with 0</td>
+            </tr>
+            </tbody>
+        </table>
+        
+        </div>
+    </section>
+    
+
+    <footer>
+        <p>Malware Behavior Analyzer v1.0 | 本报告由自动化工具生成，仅供参考</p>
+    </footer>
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        const group = tab.dataset.tabGroup;
+        const target = tab.dataset.tabTarget;
+        document.querySelectorAll(`.tab[data-tab-group="${group}"]`).forEach(t => t.classList.remove('active'));
+        document.querySelectorAll(`.tab-content[data-tab-group="${group}"]`).forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelector(`.tab-content[data-tab-group="${group}"][data-tab-id="${target}"]`).classList.add('active');
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,468 @@
+{
+  "report_id": "report_20260614_190438",
+  "generated_at": "2026-06-14T19:04:38.406965",
+  "risk_score": 0,
+  "risk_level": "UNKNOWN",
+  "file_info": {
+    "path": "D:\\code\\TraeProjects\\1368\\test_samples\\benign_test.sh",
+    "name": "benign_test.sh",
+    "size": 4205,
+    "created": "2026-06-14T19:00:56.227906",
+    "modified": "2026-06-14T19:00:56.899063",
+    "md5": "4ade94bcc60c07a62327aa1a9ab2e832",
+    "sha1": "240927c1550a2d61efd680931e9de65f1b00c1cd",
+    "sha256": "88aa7462a6bf8c4ea3587cbb5e2fce3b9efffbaf5b8240a0edc0699834c9d20b"
+  },
+  "yara": {
+    "file_path": "test_samples\\benign_test.sh",
+    "scanned": false,
+    "rules_loaded": 0,
+    "scan_time": 0.0,
+    "matches": [],
+    "errors": [
+      "yara-python not installed"
+    ],
+    "is_malicious": false,
+    "matched_rules": [],
+    "families": []
+  },
+  "virustotal": {},
+  "sandbox": {
+    "container_id": "fallback_bef6309eb6c8",
+    "start_time": "2026-06-14T19:04:37.261428",
+    "end_time": "2026-06-14T19:04:38.402687",
+    "exit_code": 0,
+    "temp_dir": "D:\\code\\TraeProjects\\1368\\temp\\session_bef6309eb6c8",
+    "stdout_preview": "",
+    "stderr_preview": ""
+  },
+  "behavior": {
+    "summary": {
+      "total_file_events": 13,
+      "total_network_events": 6,
+      "total_process_events": 0,
+      "total_registry_events": 0,
+      "total_api_events": 0,
+      "suspicious_count": 0,
+      "unique_ips": [
+        "88.20.88.34",
+        "8.8.8.8",
+        "192.168.80.46",
+        "93.184.216.34"
+      ],
+      "unique_processes": [],
+      "unique_files": [
+        "/tmp/sample_output_1234/c2_config.txt",
+        "/tmp/grandchild_12350.txt",
+        "/tmp/sample_output_1234/subdir/",
+        "/tmp/sample_output_1234/config_v2.dat",
+        "/tmp/sample_output_1234/passwd_copy.txt",
+        "/tmp/sample_output_1234/subdir/payload_3.bin",
+        "/tmp/sample_output_1234/",
+        "/tmp/sample_output_1234/subdir/payload_2.bin",
+        "/tmp/tmpfile_1234.tmp",
+        "/tmp/sample_output_1234/subdir/payload_1.bin",
+        "/tmp/sample_output_1234/config.dat",
+        "/tmp/sample_output_1234/credentials.txt"
+      ]
+    },
+    "file_events": [
+      {
+        "timestamp": "2026-06-14T19:04:38.404439",
+        "path": "/tmp/sample_output_1234/",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404462",
+        "path": "/tmp/sample_output_1234/config.dat",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404470",
+        "path": "/tmp/sample_output_1234/credentials.txt",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404474",
+        "path": "/tmp/sample_output_1234/subdir/",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404478",
+        "path": "/tmp/sample_output_1234/subdir/payload_1.bin",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404482",
+        "path": "/tmp/sample_output_1234/subdir/payload_2.bin",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404485",
+        "path": "/tmp/sample_output_1234/subdir/payload_3.bin",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404489",
+        "path": "/tmp/sample_output_1234/config_v2.dat",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404493",
+        "path": "/tmp/sample_output_1234/c2_config.txt",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404496",
+        "path": "/tmp/grandchild_12350.txt",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404500",
+        "path": "/tmp/sample_output_1234/passwd_copy.txt",
+        "action": "CREATE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404820",
+        "path": "/tmp/tmpfile_1234.tmp",
+        "action": "DELETE",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404831",
+        "path": "/tmp/sample_output_1234/config.dat",
+        "action": "DELETE",
+        "process": null,
+        "suspicious": false
+      }
+    ],
+    "network_events": [
+      {
+        "timestamp": "2026-06-14T19:04:38.405751",
+        "source_ip": "1",
+        "source_port": 0,
+        "dest_ip": "192.168.80.46",
+        "dest_port": 52848,
+        "protocol": "TCP",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.405765",
+        "source_ip": "1",
+        "source_port": 0,
+        "dest_ip": "192.168.80.46",
+        "dest_port": 53032,
+        "protocol": "TCP",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.405770",
+        "source_ip": "0",
+        "source_port": 0,
+        "dest_ip": "192.168.80.46",
+        "dest_port": 53,
+        "protocol": "UDP",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.405934",
+        "source_ip": "192.168.80.46",
+        "source_port": 52848,
+        "dest_ip": "88.20.88.34",
+        "dest_port": 443,
+        "protocol": "UDP",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.405941",
+        "source_ip": "192.168.80.46",
+        "source_port": 53032,
+        "dest_ip": "93.184.216.34",
+        "dest_port": 443,
+        "protocol": "UDP",
+        "process": null,
+        "suspicious": false
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.405947",
+        "source_ip": "192.168.80.46",
+        "source_port": 53,
+        "dest_ip": "8.8.8.8",
+        "dest_port": 53,
+        "protocol": "UDP",
+        "process": null,
+        "suspicious": false
+      }
+    ],
+    "process_events": [],
+    "registry_events": [],
+    "api_events": [],
+    "process_tree": {},
+    "timeline": [
+      {
+        "timestamp": "2026-06-14T19:04:38.404439",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.404439",
+          "path": "/tmp/sample_output_1234/",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404462",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.404462",
+          "path": "/tmp/sample_output_1234/config.dat",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404470",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.404470",
+          "path": "/tmp/sample_output_1234/credentials.txt",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404474",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.404474",
+          "path": "/tmp/sample_output_1234/subdir/",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404478",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.404478",
+          "path": "/tmp/sample_output_1234/subdir/payload_1.bin",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404482",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.404482",
+          "path": "/tmp/sample_output_1234/subdir/payload_2.bin",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404485",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.404485",
+          "path": "/tmp/sample_output_1234/subdir/payload_3.bin",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404489",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.404489",
+          "path": "/tmp/sample_output_1234/config_v2.dat",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404493",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.404493",
+          "path": "/tmp/sample_output_1234/c2_config.txt",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404496",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.404496",
+          "path": "/tmp/grandchild_12350.txt",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404500",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.404500",
+          "path": "/tmp/sample_output_1234/passwd_copy.txt",
+          "action": "CREATE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404820",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.404820",
+          "path": "/tmp/tmpfile_1234.tmp",
+          "action": "DELETE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.404831",
+        "type": "file",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.404831",
+          "path": "/tmp/sample_output_1234/config.dat",
+          "action": "DELETE",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.405751",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.405751",
+          "source_ip": "1",
+          "source_port": 0,
+          "dest_ip": "192.168.80.46",
+          "dest_port": 52848,
+          "protocol": "TCP",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.405765",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.405765",
+          "source_ip": "1",
+          "source_port": 0,
+          "dest_ip": "192.168.80.46",
+          "dest_port": 53032,
+          "protocol": "TCP",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.405770",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.405770",
+          "source_ip": "0",
+          "source_port": 0,
+          "dest_ip": "192.168.80.46",
+          "dest_port": 53,
+          "protocol": "UDP",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.405934",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.405934",
+          "source_ip": "192.168.80.46",
+          "source_port": 52848,
+          "dest_ip": "88.20.88.34",
+          "dest_port": 443,
+          "protocol": "UDP",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.405941",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.405941",
+          "source_ip": "192.168.80.46",
+          "source_port": 53032,
+          "dest_ip": "93.184.216.34",
+          "dest_port": 443,
+          "protocol": "UDP",
+          "process": null,
+          "suspicious": false
+        }
+      },
+      {
+        "timestamp": "2026-06-14T19:04:38.405947",
+        "type": "network",
+        "data": {
+          "timestamp": "2026-06-14T19:04:38.405947",
+          "source_ip": "192.168.80.46",
+          "source_port": 53,
+          "dest_ip": "8.8.8.8",
+          "dest_port": 53,
+          "protocol": "UDP",
+          "process": null,
+          "suspicious": false
+        }
+      }
+    ],
+    "suspicious_events": [],
+    "warnings": []
+  },
+  "graphs": {},
+  "dynamic_analysis": {
+    "performed": true,
+    "valid": true,
+    "status": "正常",
+    "warnings": [],
+    "error": null
+  }
+}
