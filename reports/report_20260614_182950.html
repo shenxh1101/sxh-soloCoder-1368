@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>恶意软件行为分析报告 - test_sample.py</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #0a0e17;
+    color: #e0e6ed;
+    line-height: 1.6;
+}
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 24px;
+    border: 1px solid #2a2a4a;
+}
+header h1 { font-size: 28px; margin-bottom: 8px; color: #fff; }
+header .meta { color: #8892a6; font-size: 14px; }
+.risk-banner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    border-left: 4px solid #95a5a6;
+}
+.risk-score {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #95a5a6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+    color: #fff;
+}
+.risk-details h2 { color: #95a5a6; font-size: 32px; }
+.risk-details p { color: #8892a6; }
+section {
+    background: #131a2a;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    border: 1px solid #1e2738;
+}
+section h2 {
+    font-size: 20px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #1e2738;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.info-card {
+    background: #0f1520;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #1e2738;
+}
+.info-card .label { color: #8892a6; font-size: 12px; text-transform: uppercase; margin-bottom: 4px; }
+.info-card .value { color: #fff; font-size: 14px; font-family: monospace; word-break: break-all; }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 13px;
+}
+th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid #1e2738;
+}
+th { background: #0f1520; color: #8892a6; font-weight: 600; }
+tr:hover { background: #0f1520; }
+.suspicious {
+    background: rgba(231, 76, 60, 0.1) !important;
+}
+.suspicious td:first-child::before {
+    content: "⚠ ";
+    color: #e74c3c;
+}
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.badge-critical { background: #e74c3c; color: #fff; }
+.badge-high { background: #e67e22; color: #fff; }
+.badge-medium { background: #f1c40f; color: #000; }
+.badge-low { background: #3498db; color: #fff; }
+.badge-ok { background: #2ecc71; color: #fff; }
+.badge-info { background: #3498db; color: #fff; }
+.graph-container {
+    text-align: center;
+    margin: 20px 0;
+}
+.graph-container img {
+    max-width: 100%;
+    border-radius: 8px;
+    border: 1px solid #1e2738;
+}
+.tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.tab {
+    padding: 8px 16px;
+    background: #0f1520;
+    border: 1px solid #1e2738;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #8892a6;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+.tab:hover { background: #1a2438; color: #fff; }
+.tab.active { background: #2a3a5a; color: #fff; border-color: #3a4a6a; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.hash { font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; }
+code {
+    background: #0f1520;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 12px;
+}
+.summary-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.stat-card {
+    text-align: center;
+    padding: 16px;
+    background: #0f1520;
+    border-radius: 8px;
+    border: 1px solid #1e2738;
+}
+.stat-card .num { font-size: 24px; font-weight: bold; color: #fff; }
+.stat-card .label { color: #8892a6; font-size: 12px; text-transform: uppercase; margin-top: 4px; }
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #555;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🔍 恶意软件行为分析报告</h1>
+        <div class="meta">
+            报告 ID: report_20260614_182950 | 生成时间: 2026-06-14T18:29:50.997573
+        </div>
+        <div class="risk-banner">
+            <div class="risk-score">0</div>
+            <div class="risk-details">
+                <h2>UNKNOWN RISK</h2>
+                <p>基于 YARA 规则、VirusTotal 检测和行为分析综合评估</p>
+            </div>
+        </div>
+    </header>
+
+    <section>
+        <h2>📄 文件信息</h2>
+        <div class="grid">
+            <div class="info-card">
+                <div class="label">文件名</div>
+                <div class="value">test_sample.py</div>
+            </div>
+            <div class="info-card">
+                <div class="label">文件路径</div>
+                <div class="value">d:\code\TraeProjects\1368\test_sample.py</div>
+            </div>
+            <div class="info-card">
+                <div class="label">文件大小</div>
+                <div class="value">1.47 KB</div>
+            </div>
+            <div class="info-card">
+                <div class="label">创建时间</div>
+                <div class="value">2026-06-14T18:28:09.839545</div>
+            </div>
+            <div class="info-card">
+                <div class="label">修改时间</div>
+                <div class="value">2026-06-14T18:28:10.419576</div>
+            </div>
+            <div class="info-card">
+                <div class="label">MD5</div>
+                <div class="value hash">2b51052c0e1f0ff545f34e962a734034</div>
+            </div>
+            <div class="info-card">
+                <div class="label">SHA1</div>
+                <div class="value hash">769144a8b013baf624ab5256661958417205c598</div>
+            </div>
+            <div class="info-card">
+                <div class="label">SHA256</div>
+                <div class="value hash">8dcc2cfeaeaedb62dde664d80be7347329e5c9a77d051b8f9e6db2e5997e9467</div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section>
+        <h2>🦠 YARA 规则扫描</h2>
+        <p style="color:#8892a6;">未执行 YARA 扫描: 未知原因</p>
+    </section>
+            
+    
+    <section>
+        <h2>🌍 VirusTotal 查询</h2>
+        <p style="color:#8892a6;">未执行 VirusTotal 查询: 未启用</p>
+    </section>
+            
+    
+    <section>
+        <h2>⚠ 可疑操作</h2>
+        <p style="color:#2ecc71;">✓ 未检测到明显的可疑操作</p>
+    </section>
+            
+
+    
+
+    
+
+    
+    <section>
+        <h2>📋 行为详情</h2>
+        <div class="tabs"><div class="tab active" data-tab-group="behavior" data-tab-target="file">📁 文件系统 (0)</div><div class="tab " data-tab-group="behavior" data-tab-target="network">🌐 网络连接 (0)</div><div class="tab " data-tab-group="behavior" data-tab-target="process">⚙ 进程创建 (0)</div><div class="tab " data-tab-group="behavior" data-tab-target="registry">🔑 注册表 (0)</div><div class="tab " data-tab-group="behavior" data-tab-target="api">🔧 API调用 (0)</div></div>
+        <div class="tab-content active" data-tab-group="behavior" data-tab-id="file"><p style="color:#8892a6;">无文件系统事件</p></div><div class="tab-content " data-tab-group="behavior" data-tab-id="network"><p style="color:#8892a6;">无网络连接事件</p></div><div class="tab-content " data-tab-group="behavior" data-tab-id="process"><p style="color:#8892a6;">无进程事件</p></div><div class="tab-content " data-tab-group="behavior" data-tab-id="registry"><p style="color:#8892a6;">无注册表事件</p></div><div class="tab-content " data-tab-group="behavior" data-tab-id="api"><p style="color:#8892a6;">无API调用事件</p></div>
+    </section>
+    
+
+    <footer>
+        <p>Malware Behavior Analyzer v1.0 | 本报告由自动化工具生成，仅供参考</p>
+    </footer>
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        const group = tab.dataset.tabGroup;
+        const target = tab.dataset.tabTarget;
+        document.querySelectorAll(`.tab[data-tab-group="${group}"]`).forEach(t => t.classList.remove('active'));
+        document.querySelectorAll(`.tab-content[data-tab-group="${group}"]`).forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelector(`.tab-content[data-tab-group="${group}"][data-tab-id="${target}"]`).classList.add('active');
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "report_id": "report_20260614_182950",
+  "generated_at": "2026-06-14T18:29:50.997573",
+  "risk_score": 0,
+  "risk_level": "UNKNOWN",
+  "file_info": {
+    "path": "d:\\code\\TraeProjects\\1368\\test_sample.py",
+    "name": "test_sample.py",
+    "size": 1507,
+    "created": "2026-06-14T18:28:09.839545",
+    "modified": "2026-06-14T18:28:10.419576",
+    "md5": "2b51052c0e1f0ff545f34e962a734034",
+    "sha1": "769144a8b013baf624ab5256661958417205c598",
+    "sha256": "8dcc2cfeaeaedb62dde664d80be7347329e5c9a77d051b8f9e6db2e5997e9467"
+  },
+  "yara": {},
+  "virustotal": {},
+  "sandbox": {},
+  "behavior": {},
+  "graphs": {}
+}
