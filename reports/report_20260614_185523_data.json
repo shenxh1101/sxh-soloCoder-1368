@@ -1,0 +1,40 @@
+{
+  "report_id": "report_20260614_185523",
+  "generated_at": "2026-06-14T18:55:23.595155",
+  "risk_score": 0,
+  "risk_level": "UNKNOWN",
+  "file_info": {
+    "path": "D:\\code\\TraeProjects\\1368\\test_sample.txt",
+    "name": "test_sample.txt",
+    "size": 38,
+    "created": "2026-06-14T18:54:37.894297",
+    "modified": "2026-06-14T18:54:37.908110",
+    "md5": "0d4840265890741f386e8c5fe31b82f8",
+    "sha1": "3d9d061d664750870193ae98231558f0e3a7bf41",
+    "sha256": "35699e148b2365f509aa0022a304c75d587d57b731904590268cddf04ba71fb1"
+  },
+  "yara": {
+    "file_path": "test_sample.txt",
+    "scanned": false,
+    "rules_loaded": 0,
+    "scan_time": 0.0,
+    "matches": [],
+    "errors": [
+      "yara-python not installed"
+    ],
+    "is_malicious": false,
+    "matched_rules": [],
+    "families": []
+  },
+  "virustotal": {},
+  "sandbox": {},
+  "behavior": {},
+  "graphs": {},
+  "dynamic_analysis": {
+    "performed": false,
+    "valid": false,
+    "status": "未执行",
+    "warnings": [],
+    "error": null
+  }
+}
